@@ -5,6 +5,10 @@
     "Lalit Tanwar <lalit.tanwar07@gmail.com>"
   ],
   "license": "MIT",
+  "dependencies": {
+    "webmodules-foo" : ">=3.0.0",
+    "webmodules-jquery": ">=2.1.5"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
