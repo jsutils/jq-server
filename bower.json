@@ -8,7 +8,7 @@
   "dependencies": {
     "webmodules-foo" : ">=3.0.0",
     "webmodules-jquery": ">=2.1.5",
-    "webmodules-bootloader": ">=1.1.7"
+    "webmodules-bootloader": ">=0.1.7"
   },
   "ignore": [
     "**/.*",
