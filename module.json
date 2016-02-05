@@ -1,0 +1,7 @@
+{
+  "name": "jsutils/server",
+  "jsutils/server": {
+    "js" : ["jsutils.server.js"],
+    "on": ["webmodules/jquery"]
+  }
+}
