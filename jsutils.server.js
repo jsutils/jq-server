@@ -17,18 +17,26 @@ define({
       "taxClassCodes": "taxengine-admin/taxclass/codes",
       "destinations": "taxengine-admin/location/citystates"
     },
-    get: function(url, data, config) {
+    get: function(url, data, _config) {
       return (function(self) {
         if (config && config.cache && hardCahce[url]) {
           return hardCahce[url];
         }
-        hardCahce[url] = jQuery.get(self.apiServer + self.prepare(url, config), data);
+        var config = _config || {};
+        hardCahce[url] = jQuery.ajax({
+          type: "get",
+          url : self.apiServer + self.prepare(url, config),
+          data : data,
+          contentType: "application/json",
+          headers: config.headers
+        });
         return hardCahce[url];
       })(this).then(function(resp) {
         return JSON.parse(JSON.stringify(resp));
       });
     },
-    post: function(url, data, config) {
+    post: function(url, data, _config) {
+      var config = _config || {};
       return jQuery.ajax({
         url: this.apiServer + this.prepare(url, config),
         data: JSON.stringify(data),
