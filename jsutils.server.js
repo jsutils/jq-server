@@ -60,6 +60,16 @@ define({
         url = url.replace("{" + i + "}", config[i]);
       }
       return url;
+    },
+    delete: function(url, data, _config) {
+      var config = _config || {};
+      return jQuery.ajax({
+        type: "delete",
+        url : this.apiServer + this.prepare(url, config),
+        data : data,
+        contentType: "application/json",
+        headers: config.headers
+      });
     }
   };
 });
