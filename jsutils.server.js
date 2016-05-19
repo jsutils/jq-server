@@ -57,7 +57,8 @@ define({
                 headers: config.headers
             }), data, _config);
         },
-        put: function(url, data, config) {
+        put: function(url, data, _config) {
+            var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
                 url: this.apiServer + this.prepare(url, config),
                 data: JSON.stringify(data),
