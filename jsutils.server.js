@@ -19,14 +19,14 @@ define({
         }, _done_: function() {
         }, _fail_: function() {
         }, _always_: function() {
-        }, addCallbacks: function($promise,url, data, _config) {
+        }, addCallbacks: function($promise, url, data, _config) {
             var self = this;
-            return $promise.done(function(resp){
-                return self._done_(resp,url, data, _config);
-            }).fail(function(resp){
-                return self._fail_(resp,url, data, _config);
-            }).always(function(resp){
-                return self._always_(resp,url, data, _config);
+            return $promise.done(function(resp) {
+                return self._done_(resp, url, data, _config);
+            }).fail(function(resp) {
+                return self._fail_(resp, url, data, _config);
+            }).always(function(resp) {
+                return self._always_(resp, url, data, _config);
             });
         },
         get: function(url, data, _config) {
@@ -45,7 +45,7 @@ define({
                 return hardCahce[url];
             })(this).then(function(resp) {
                 return JSON.parse(JSON.stringify(resp));
-            }),data,_config);
+            }), data, _config);
         },
         post: function(url, data, _config) {
             var config = _config || {};
@@ -55,7 +55,7 @@ define({
                 contentType: "application/json",
                 type: "post",
                 headers: config.headers
-            }),data, _config);
+            }), data, _config);
         },
         put: function(url, data, config) {
             return this.addCallbacks(jQuery.ajax({
@@ -64,7 +64,7 @@ define({
                 contentType: "application/json",
                 type: "put",
                 headers: config.headers
-            }),data, _config);
+            }), data, _config);
         },
         delete: function(url, data, _config) {
             var config = _config || {};
@@ -74,7 +74,7 @@ define({
                 data: data,
                 contentType: "application/json",
                 headers: config.headers
-            }),data, _config);
+            }), data, _config);
         },
         open: function(url, data, config) {
             var query = URI.param(data);
