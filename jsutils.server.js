@@ -77,6 +77,18 @@ define({
                 headers: config.headers
             }), data, _config);
         },
+        submit: function(url, formData, _config) {
+           var config = _config || {};
+           return this.addCallbacks(jQuery.ajax({
+              url: this.apiServer + this.prepare(url, config),
+              data: formData,
+              cache: false,
+              contentType: false,
+              processData: false,
+              type: "POST",
+              headers: config.headers
+           }), formData, _config);
+       },
         open: function(url, data, config) {
             var query = URI.param(data);
             query = query ? ("?" + query) : "";
