@@ -24,17 +24,23 @@ define({
             return $promise.done(function(resp) {
                 return self._done_(resp, url, data, _config);
             }).fail(function(resp) {
-                return self._fail_(resp, url, data, _config);
+                if (_config._callbacks_ && !is.Undefined(_config._callbacks_[resp.status])) {
+                    if (is.Function(_config._callbacks_[resp.status])) {
+                        return _config._callbacks_[resp.status](resp, url, data, _config);
+                    }
+                } else {
+                    return self._fail_(resp, url, data, _config);
+                }
             }).always(function(resp) {
                 return self._always_(resp, url, data, _config);
             });
         },
         get: function(url, data, _config) {
+            var config = _config || {};
             return this.addCallbacks((function(self) {
                 if (config && config.cache && hardCahce[url]) {
                     return hardCahce[url];
                 }
-                var config = _config || {};
                 hardCahce[url] = jQuery.ajax({
                     type: "get",
                     url: self.apiServer + self.prepare(url, config),
@@ -45,7 +51,7 @@ define({
                 return hardCahce[url];
             })(this).then(function(resp) {
                 return JSON.parse(JSON.stringify(resp === undefined ? "" : resp));
-            }), data, _config);
+            }), url, data, _config);
         },
         post: function(url, data, _config) {
             var config = _config || {};
@@ -55,7 +61,7 @@ define({
                 contentType: "application/json",
                 type: "post",
                 headers: config.headers
-            }), data, _config);
+            }), url, data, config);
         },
         put: function(url, data, _config) {
             var config = _config || {};
@@ -65,7 +71,7 @@ define({
                 contentType: "application/json",
                 type: "put",
                 headers: config.headers
-            }), data, _config);
+            }), data, config);
         },
         delete: function(url, data, _config) {
             var config = _config || {};
@@ -75,7 +81,7 @@ define({
                 data: data,
                 contentType: "application/json",
                 headers: config.headers
-            }), data, _config);
+            }), url, data, config);
         },
         submit: function(url, formData, _config) {
            var config = _config || {};
@@ -100,6 +106,6 @@ define({
                 url = url.replace("{" + i + "}", config[i]);
             }
             return url;
-        },
+        }
     };
 });
