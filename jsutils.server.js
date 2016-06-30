@@ -24,7 +24,7 @@ define({
             return $promise.done(function(resp) {
                 return self._done_(resp, url, data, _config);
             }).fail(function(resp) {
-                if (_config._callbacks_ && !is.Undefined(_config._callbacks_[resp.status])) {
+                if (_config._callbacks_ && is.Value(_config._callbacks_[resp.status])) {
                     if (is.Function(_config._callbacks_[resp.status])) {
                         return _config._callbacks_[resp.status](resp, url, data, _config);
                     }
