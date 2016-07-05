@@ -71,7 +71,7 @@ define({
                 contentType: "application/json",
                 type: "put",
                 headers: config.headers
-            }), data, config);
+            }), url, data, config);
         },
         delete: function(url, data, _config) {
             var config = _config || {};
@@ -93,7 +93,7 @@ define({
               processData: false,
               type: "POST",
               headers: config.headers
-           }), formData, _config);
+           }), url ,formData, config);
        },
         open: function(url, data, config) {
             var query = URI.param(data);
