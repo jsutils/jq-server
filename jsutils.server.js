@@ -51,7 +51,7 @@ define({
                 return hardCahce[url];
             })(this).then(function(resp) {
                 return JSON.parse(JSON.stringify(resp === undefined ? "" : resp));
-            }), url, data, _config);
+            }), url, data, config);
         },
         post: function(url, data, _config) {
             var config = _config || {};
