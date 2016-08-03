@@ -84,21 +84,35 @@ define({
             }), url, data, config);
         },
         submit: function(url, formData, _config) {
-           var config = _config || {};
-           return this.addCallbacks(jQuery.ajax({
-              url: this.apiServer + this.prepare(url, config),
-              data: formData,
-              cache: false,
-              contentType: false,
-              processData: false,
-              type: "POST",
-              headers: config.headers
-           }), url ,formData, config);
-       },
+            var config = _config || {};
+            return this.addCallbacks(jQuery.ajax({
+                url: this.apiServer + this.prepare(url, config),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: "POST",
+                headers: config.headers
+            }), url, formData, config);
+        },
         open: function(url, data, config) {
             var query = URI.param(data);
             query = query ? ("?" + query) : "";
             return window.open(this.prepare(url, config) + query);
+        },
+        getFrame: function(url, data, config) {
+            var query = URI.param(data);
+            query = query ? ("?" + query) : "";
+            var dff = jQuery.Deferred();
+            var $iFrame = jQuery('<iframe src="' + this.prepare(url, config) + query + '"></iframe>');
+            jQuery('body').append($iFrame);
+            $iFrame[0].onload = function() {
+                window.setTimeout(function() {
+                    $iFrame.remove();
+                    dff.resolve();
+                }, 500);
+            }
+            return dff.promise();
         },
         prepare: function(url, config) {
             url = (this.urlMap[url] || url);
