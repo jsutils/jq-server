@@ -12,10 +12,8 @@ define({
     return {
         apiServer: bootloader.config().apiServer || "/data/",
         urlMap: {
-            "newTaxClass": "taxengine-admin/taxclass",
-            "taxClass": "taxengine-admin/taxclass/{code}",
-            "taxClassCodes": "taxengine-admin/taxclass/codes",
-            "destinations": "taxengine-admin/location/citystates"
+            "newSomeClass": "someengine-admin/someclass",
+            "destinations": "somengine-admin/location/citystates"
         }, _done_: function() {
         }, _fail_: function() {
         }, _always_: function() {
@@ -35,7 +33,25 @@ define({
                 return self._always_(resp, url, data, _config);
             });
         },
-        get: function(url, data, _config) {
+        request: function(method, url, data, config) {
+            return this["do_" + method].apply(this, [url, data, config]);
+        },
+        get: function(url, data, config) {
+            return this.request('get', url, data, config);
+        },
+        post: function(url, data, config) {
+            return this.request('post', url, data, config);
+        },
+        put: function(url, data, config) {
+            return this.request('put', url, data, config);
+        },
+        "delete": function(url, data, config) {
+            return this.request('delete', url, data, config);
+        },
+        getFrame: function(url, data, config) {
+            return this.request('getFrame', url, data, config);
+        },
+        do_get: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks((function(self) {
                 if (config && config.cache && hardCahce[url]) {
@@ -53,7 +69,7 @@ define({
                 return JSON.parse(JSON.stringify(resp === undefined ? "" : resp));
             }), url, data, config);
         },
-        post: function(url, data, _config) {
+        do_post: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
                 url: this.apiServer + this.prepare(url, config),
@@ -63,7 +79,7 @@ define({
                 headers: config.headers
             }), url, data, config);
         },
-        put: function(url, data, _config) {
+        do_put: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
                 url: this.apiServer + this.prepare(url, config),
@@ -73,7 +89,7 @@ define({
                 headers: config.headers
             }), url, data, config);
         },
-        delete: function(url, data, _config) {
+        do_delete: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
                 type: "delete",
@@ -83,7 +99,7 @@ define({
                 headers: config.headers
             }), url, data, config);
         },
-        submit: function(url, formData, _config) {
+        do_submit: function(url, formData, _config) {
             var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
                 url: this.apiServer + this.prepare(url, config),
@@ -95,12 +111,12 @@ define({
                 headers: config.headers
             }), url, formData, config);
         },
-        open: function(url, data, config) {
+        do_open: function(url, data, config) {
             var query = URI.param(data);
             query = query ? ("?" + query) : "";
             return window.open(this.prepare(url, config) + query);
         },
-        getFrame: function(url, data, config) {
+        do_getFrame: function(url, data, config) {
             var query = URI.param(data);
             query = query ? ("?" + query) : "";
             var dff = jQuery.Deferred();
