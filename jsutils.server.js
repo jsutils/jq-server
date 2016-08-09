@@ -51,6 +51,9 @@ define({
         getFrame: function(url, data, config) {
             return this.request('getFrame', url, data, config);
         },
+        open: function(url, data, config) {
+            return this.request('open', url, data, config);
+        },
         do_get: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks((function(self) {
