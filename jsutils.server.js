@@ -60,17 +60,24 @@ define({
         do_get: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks((function(self) {
-                if (config && config.cache && hardCahce[url]) {
-                    return hardCahce[url];
+                var finalUrl = self.apiServer + self.prepare(url, config)
+
+                var query = URI.param(data);
+                query = query ? ("?" + query) : "";
+
+                var finalUrlKey = finalUrl + query;
+
+                if (config && (config.cache || config.$cache) && hardCahce[finalUrlKey]) {
+                    return hardCahce[finalUrlKey];
                 }
-                hardCahce[url] = jQuery.ajax({
+                hardCahce[finalUrlKey] = jQuery.ajax({
                     type: "get",
-                    url: self.apiServer + self.prepare(url, config),
+                    url: finalUrl,
                     data: data,
                     contentType: "application/json",
                     headers: config.headers
                 });
-                return hardCahce[url];
+                return hardCahce[finalUrlKey];
             })(this).then(function(resp) {
                 return JSON.parse(JSON.stringify(resp === undefined ? "" : resp));
             }), url, data, config);
