@@ -1,14 +1,13 @@
 {
   "name": "jsutils-server",
-  "version": "0.0.0",
   "authors": [
     "Lalit Tanwar <lalit.tanwar07@gmail.com>"
   ],
   "license": "MIT",
   "dependencies": {
-    "webmodules-foo" : ">=3.0.0",
+    "webmodules-foo" : ">=3.2.6",
     "webmodules-jquery": ">=2.1.5",
-    "webmodules-bootloader": ">=0.1.7"
+    "webmodules-bootloader": ">=0.1.21"
   },
   "ignore": [
     "**/.*",
