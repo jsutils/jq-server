@@ -48,6 +48,9 @@ define({
         "delete": function(url, data, config) {
             return this.request('delete', url, data, config);
         },
+        patch: function(url, data, config) {
+            return this.request('patch', url, data, config);
+        },
         getFrame: function(url, data, config) {
             return this.request('getFrame', url, data, config);
         },
@@ -82,6 +85,16 @@ define({
                 return JSON.parse(JSON.stringify(resp === undefined ? "" : resp));
             }), url, data, config);
         },
+        do_patch: function(url, data, _config) {
+            var config = _config || {};
+            return this.addCallbacks(jQuery.ajax({
+                url: this.apiServer + this.prepare(url, config),
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                type: "patch",
+                headers: config.headers
+            }), url, data, config);
+        },
         do_post: function(url, data, _config) {
             var config = _config || {};
             return this.addCallbacks(jQuery.ajax({
@@ -107,7 +120,7 @@ define({
             return this.addCallbacks(jQuery.ajax({
                 type: "delete",
                 url: this.apiServer + this.prepare(url, config),
-                data: data,
+                data: JSON.stringify(data),
                 contentType: "application/json",
                 headers: config.headers
             }), url, data, config);
